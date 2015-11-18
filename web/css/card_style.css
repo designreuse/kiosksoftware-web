@@ -1,0 +1,57 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+@font-face {
+	font-family: "Roboto-Regular";
+	src: url(../fonts/Roboto-Regular.ttf);
+}
+
+
+* { margin:0; padding:0; }
+.clear { clear:both; }
+
+
+.card_bgr { background:url(../images/card_bg2.jpg) no-repeat center center; width:330px; height:210px; margin:10px 0;  }
+/*.card_left { width: 177px; float:left; margin: 19px 0 0 98px; padding:0; text-align:left; }*/
+.card_left h3 { font:13px/19px 'Roboto-Regular', sans-serif, Arial; color:#fff; text-transform:uppercase; font-weight:bold; 
+width:100%; padding:0; margin:0; }
+.card_left h4 { font:13px/19px 'Roboto-Regular', sans-serif, Arial; color:#fff; text-transform:uppercase; font-weight:bold; 
+width:100%; padding:0; margin:0; }
+.card_right { width:40px; height:40px; float:right; margin:32px 4px 0 0; padding:0; }
+.card_right img { width:40px; height:40px; }
+.bar_code { width:103px; height:19px; float:left; margin: 13px 4px 0 150px; padding:0; }
+.bar_code img { width: 115px; height: 28px; }
+
+.card_left {
+  width: 185px;
+  float: left;
+  margin: 19px 0 0 98px;
+  padding: 0;
+  text-align: left;
+}
+
+input.prnt.btn.btn-warning {
+  float: left; margin: 0 0 25px 0;
+}
+
+
+/* Responsive Media Query */
+
+@media only screen and (min-width : 768px) and (max-width : 1024px) {
+	
+
+	
+}
+
+@media only screen and (min-width : 480px) and (max-width : 767px) {
+	
+	
+
+}
+
+@media only screen and (min-width : 0px) and (max-width : 479px) {
+	
+
+
+}
