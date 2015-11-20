@@ -16,11 +16,18 @@
     String kiosk_ip = request.getParameter("kiosk_ip");
 
     PreparedStatement pst = null;
-    ResultSet rs = null;
-    Statement st = null;
     int update = 0;
+    int count = 0;
+    String admin_id = null;
     try {
-        pst = conn.prepareStatement("INSERT INTO sengroup_new_member_reg_details(fullname,member_id,present_address,user_type,email,phone_no,points,status,kiosk_ip) VALUES(?,?,?,?,?,?,?,?,?)");
+        java.sql.Statement st = conn.createStatement();
+        java.sql.ResultSet rs = st.executeQuery("SELECT * FROM loyalty_allocate_subscription_plan WHERE allocate_ip='" + kiosk_ip + "'");
+        while (rs.next()) {
+            count++;
+            admin_id = rs.getString("admin_id");
+        }
+
+        pst = conn.prepareStatement("INSERT INTO sengroup_new_member_reg_details(fullname,member_id,present_address,user_type,email,phone_no,points,status,kiosk_ip,admin_id) VALUES(?,?,?,?,?,?,?,?,?,?)");
         pst.setString(1, mem_name);
         pst.setString(2, "MEM-" + Integer.toString((int) (Math.random() * 10000)));
         pst.setString(3, address);
@@ -30,6 +37,7 @@
         pst.setString(7, "200");
         pst.setString(8, "active");
         pst.setString(9, kiosk_ip);
+        pst.setString(10, admin_id);
 
         update = pst.executeUpdate();
         if (update != 0) {
@@ -42,6 +50,6 @@
 
     } catch (Exception e) {
     } finally {
-        out.close();
+        conn.close();
     }
 %>
