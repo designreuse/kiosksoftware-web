@@ -136,9 +136,9 @@
                                                 }
                                             %>
                                             <%
-                                                int totl_points = Integer.parseInt(total_ponits) + points;
-                                                java.sql.Statement stg = conn.createStatement();
-                                                int update = stg.executeUpdate("UPDATE sengroup_new_member_reg_details SET points='" + Integer.toString(totl_points) + "' WHERE member_id='" + member_id + "'");
+                                               // int totl_points = Integer.parseInt(total_ponits) + points;
+                                               // java.sql.Statement stg = conn.createStatement();
+                                               // int update = stg.executeUpdate("UPDATE sengroup_new_member_reg_details SET points='" + Integer.toString(totl_points) + "' WHERE member_id='" + member_id + "'");
                                             %>
 
 
