@@ -14,12 +14,20 @@
         java.sql.ResultSet rs=st.executeQuery("SELECT * FROM sengroup_new_member_reg_details WHERE member_id='"+mem_id+"'");
         if(rs.next())
         {
+            java.sql.Statement st_g = conn.createStatement();
+            java.sql.ResultSet rs_g = st_g.executeQuery("SELECT * FROM loyalty_membergroup WHERE membershippoint = '"+rs.getString("points")+"'");
+            if(rs_g.next()){
+                jobj.put("fullname", rs.getString("fullname")+"( "+rs_g.getString("groupname")+" )");
+            }else{
+                jobj.put("fullname", rs.getString("fullname"));
+            }
             jobj.put("msg", "1");
-            jobj.put("fullname", rs.getString("fullname"));
+            //jobj.put("fullname", rs.getString("fullname"));
             jobj.put("present_address", rs.getString("present_address"));
             jobj.put("email", rs.getString("email"));
             jobj.put("phone_no", rs.getString("phone_no"));
             jobj.put("points", rs.getString("points"));
+            
             out.println(jobj);
             
         }
@@ -29,5 +37,8 @@
         }
     }
     catch(Exception e){}
+    finally{
+        conn.close();
+    }
     
 %>
