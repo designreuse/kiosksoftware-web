@@ -151,27 +151,27 @@
                                     </div>
 
                                     <%
-                        try{
-                                        String member_id = request.getParameter("member_id");
-                                        java.sql.Statement stCHKKK = conn.createStatement();
-                                        java.sql.ResultSet rsstCHKKK = stCHKKK.executeQuery("SELECT * FROM sengroup_new_member_reg_details WHERE member_id='" + member_id + "' or phone_no='" + member_id + "' or email='" + member_id + "'");
-                                        if (rsstCHKKK.next()) {
+                                        try {
+                                            String member_id = request.getParameter("member_id");
+                                            java.sql.Statement stCHKKK = conn.createStatement();
+                                            java.sql.ResultSet rsstCHKKK = stCHKKK.executeQuery("SELECT * FROM sengroup_new_member_reg_details WHERE member_id='" + member_id + "' or phone_no='" + member_id + "' or email='" + member_id + "'");
+                                            if (rsstCHKKK.next()) {
 
-                                            if (request.getParameter("member_id") != null) {
+                                                if (request.getParameter("member_id") != null) {
 
-                                                java.sql.Statement st = conn.createStatement();
-                                                java.sql.ResultSet rs = st.executeQuery("SELECT * FROM sengroup_new_member_reg_details WHERE member_id='" + member_id + "' or phone_no='" + member_id + "' or email='" + member_id + "'");
-                                                if (rs.next()) {
+                                                    java.sql.Statement st = conn.createStatement();
+                                                    java.sql.ResultSet rs = st.executeQuery("SELECT * FROM sengroup_new_member_reg_details WHERE member_id='" + member_id + "' or phone_no='" + member_id + "' or email='" + member_id + "'");
+                                                    if (rs.next()) {
 
-                                                    //out.print("pk");
-                                                    System.out.print("pk");
-                                                    int random_code = (int) (Math.random() * 1000000);
-                                                    String dir = request.getRealPath("/uploads/");
-                                                    //out.print(dir+"path");
-                                                    Barcode barcode = new Barcode();
-                                                    barcode.setSymbology(Barcode.CODE128A);
-                                                    barcode.setCode(Integer.toString(random_code));
-                                                    String image_name = rs.getString("member_id") + ".png";
+                                                        //out.print("pk");
+                                                        System.out.print("pk");
+                                                        int random_code = (int) (Math.random() * 1000000);
+                                                        String dir = request.getRealPath("/uploads/");
+                                                        //out.print(dir+"path");
+                                                        Barcode barcode = new Barcode();
+                                                        barcode.setSymbology(Barcode.CODE128A);
+                                                        barcode.setCode(Integer.toString(random_code));
+                                                        String image_name = rs.getString("member_id") + ".png";
 
                                                  //out.print(image_name+".png");
 
@@ -203,18 +203,19 @@
                                         </div>
                                     </div>
                                     <%
-                                                    barcode.drawImage2File(dir + "/" + image_name);
-                                                    java.sql.Statement st_ge = conn.createStatement();
-                                                    int update = st_ge.executeUpdate("UPDATE sengroup_new_member_reg_details SET loyalty_card_nos='" + Integer.toString(random_code) + "',images='" + image_name + "' WHERE member_id='" + member_id + "' or phone_no='" + member_id + "' or email='" + member_id + "'");
+                                                        barcode.drawImage2File(dir + "/" + image_name);
+                                                        java.sql.Statement st_ge = conn.createStatement();
+                                                        int update = st_ge.executeUpdate("UPDATE sengroup_new_member_reg_details SET loyalty_card_nos='" + Integer.toString(random_code) + "',images='" + image_name + "' WHERE member_id='" + member_id + "' or phone_no='" + member_id + "' or email='" + member_id + "'");
 
-                                                } else {
-                                                    response.sendRedirect("generate_card.jsp?staus=2&opt=" + session.getId());
+                                                    } else {
+                                                        response.sendRedirect("generate_card.jsp?staus=2&opt=" + session.getId());
+                                                    }
                                                 }
+                                            } else {
+                                                response.sendRedirect("generate_card.jsp?staus=2&opt=" + session.getId());
                                             }
-                                        } else {
-                                            response.sendRedirect("generate_card.jsp?staus=2&opt=" + session.getId());
+                                        } catch (Exception e) {
                                         }
-                                        }catch(Exception e){}
                                     %>
 
 
@@ -269,8 +270,8 @@
 </body>
 </html>
 
-<%  
-                        } else {
+<%
+    } else {
         response.sendRedirect("index.jsp");
     }
 %>

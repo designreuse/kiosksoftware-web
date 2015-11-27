@@ -274,7 +274,7 @@
                                     <div class="sm_lft_pic"><a href="#"><img src="images/salestypes.gif" alt=""></a></div>
 
                                     <div class="tp_rgh_hdng">
-                                        <h3><a href="auto_checkin_checkout.jsp?&opt=<%=session.getId()%>">Auto Timer</a></h3>
+                                        <h3><a href="create_auto_timer.jsp?&opt=<%=session.getId()%>">Auto Timer</a></h3>
                                         <div class="acl_cllr"></div> 
                                         <h4><a href="create_auto_timer.jsp?&opt=<%=session.getId()%>">Manage your timer</a></h4>
 

@@ -52,7 +52,8 @@
             <li class="header">Purchase Entry</li>
             <li><a href="daily_purchase_entry.jsp?&opt=<%=session.getId()%>"><i class="fa fa-circle-o text-aqua"></i> <span>Daily Purchase Entry</span></a></li>
             <li class="header">Report</li>
-            <li><a href="generate_card.jsp?&opt=<%=session.getId()%>"><i class="fa fa-circle-o text-aqua"></i> <span>Print Card</span></a></li>
+            <!--<li><a href="generate_card.jsp?&opt=<%=session.getId()%>"><i class="fa fa-circle-o text-aqua"></i> <span>Print Card</span></a></li>-->
+            <li><a href="member_details.jsp?&opt=<%=session.getId()%>"><i class="fa fa-circle-o text-aqua"></i> <span>Provide Loyalty Card</span></a></li>
             
             <!--<li><a href="view_list_of_users_op.jsp?&opt=<%=session.getId()%>"><i class="fa fa-circle-o text-aqua"></i> <span>View User Details</span></a></li>-->
             <li><a href="view_list_of_members_op.jsp?&opt=<%=session.getId()%>"><i class="fa fa-circle-o text-aqua"></i> <span>View Member Details</span></a></li>
