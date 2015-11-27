@@ -71,7 +71,11 @@
                         <div style=" background: green; padding: 3px 3px 3px 3px; width: 97% ; margin-left: 15px; margin-bottom: 5px;color: #ffffff; ">
                             Member Group Created!
                         </div>
-                        <%} else {%>
+                        <%} else if (request.getParameter("status").equals("3")) {%>
+                        <div style=" background: green; padding: 3px 3px 3px 3px; width: 97% ;margin-left: 5px;margin-bottom: 5px;color: #ffffff; ">
+                            Successfully updated! 
+                        </div>
+                        <% } else {%>
                         <div style=" background: red; padding: 3px 3px 3px 3px; width: 97% ;margin-left: 5px;margin-bottom: 5px;color: #ffffff; ">
                             There Goes Something Wrong! 
                         </div>
@@ -283,6 +287,19 @@
 
                             </div>
 
+                            <div class="acl_cllr"></div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 clearfix">
+                                <div class="in_wh_bx clearfix">
+                                    <div class="sm_lft_pic"><a href="#"><img src="images/salestypes.gif" alt=""></a></div>
+
+                                    <div class="tp_rgh_hdng">
+                                        <h3><a href="auto_checkin_checkout.jsp?&opt=<%=session.getId()%>">Auto Check Out</a></h3>
+                                        <div class="acl_cllr"></div> 
+                                        <h4><a href="auto_checkin_checkout.jsp?&opt=<%=session.getId()%>">Manage your members Auto checkout</a></h4>
+                                    </div>
+                                </div>  
+
+                            </div>
                             <div class="acl_cllr"></div>
 
 

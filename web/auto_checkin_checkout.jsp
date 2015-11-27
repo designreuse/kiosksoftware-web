@@ -16,23 +16,23 @@
         Calendar cal = Calendar.getInstance();
         String currentDateTimeString = dateFormat.format(date);
         java.sql.Statement st_all = conn.createStatement();
-        java.sql.ResultSet rs_all = st_all.executeQuery("SELECT * FROM loyalty_member_login_info_datewise WHERE create_date='" + currentDateTimeString + "' AND status='Check In' OR status='Check Out'");
+        java.sql.ResultSet rs_all = st_all.executeQuery("SELECT * FROM loyalty_member_login_info_datewise WHERE create_date='" + currentDateTimeString + "' AND status='Check In'");
         while (rs_all.next()) {
             check_in_array.add(rs_all.getString("member_id"));
             kiosk_id = rs_all.getString("kiosk_id");
             out.println(rs_all.getString("member_id"));
         }
-        /*java.sql.Statement st_check_out = conn.createStatement();
+        java.sql.Statement st_check_out = conn.createStatement();
         java.sql.ResultSet rs_all_checkout = st_check_out.executeQuery("SELECT * FROM loyalty_member_login_info_datewise WHERE create_date='" + currentDateTimeString + "' AND status='Check Out'");
         while (rs_all_checkout.next()) {
             check_out_array.add(rs_all_checkout.getString("member_id"));
         }
-        out.println("CHECKIN:" + check_in_array);
-        out.println("CHECKOUT" + check_out_array);
+        //out.println("CHECKIN:" + check_in_array);
+        //out.println("CHECKOUT" + check_out_array);
         for (int i = 0; i < check_in_array.size(); i++) {
             for (int j = 0; j < check_out_array.size(); j++) {
                 if (!check_in_array.get(i).equals(check_out_array.get(j))) {
-                    out.println(check_in_array.get(i));
+                    //out.println(check_in_array.get(i));
                     PreparedStatement pst = conn.prepareStatement("INSERT INTO loyalty_member_login_info_datewise(member_id,kiosk_id,status,flag,create_date) VALUES(?,?,?,?,?)");
                     pst.setString(1, check_in_array.get(i));
                     pst.setString(2, kiosk_id);
@@ -40,9 +40,11 @@
                     pst.setString(4, "0");
                     pst.setString(5, currentDateTimeString);
                     int update = pst.executeUpdate();
+                    
                 }
             }
-        }*/
+        }
+        response.sendRedirect("setting.jsp?status=3&opt="+session.getId());
         /*java.sql.Statement stch = conn.createStatement();
          java.sql.ResultSet rsch = stch.executeQuery("");
          java.sql.Statement stu = conn.createStatement();
