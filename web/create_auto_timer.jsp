@@ -1,7 +1,5 @@
 
-
-<%
-    String user_name = (String) session.getAttribute("user_name");
+<%    String user_name = (String) session.getAttribute("user_name");
     String user_type = (String) session.getAttribute("user_type");
     String user_code = (String) session.getAttribute("user_code");
     String cus_id = (String) session.getAttribute("cus_id");
@@ -33,8 +31,13 @@
             <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
             <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+        <script>
+
+
+        </script>
+
     </head>
-    <body class="skin-blue sidebar-mini">
+    <body class="skin-blue sidebar-mini" onload="myFunction()">
         <div class="wrapper">
 
             <%@include file="header/dashboard_header.jsp" %>
@@ -88,7 +91,7 @@
                                     <div class="box-body">
 
                                         <div class="form-group">
-                                            <label>Set Time</label>
+                                            <label>Set Time (In Minutes)</label>
                                             <input type="text" class="form-control" id="set_timer" name="set_timer" placeholder="Set Time">
                                         </div>
 
@@ -128,6 +131,70 @@
                             </div><!--/.col (right) -
                             <!-- /.box-body -->
                         </form>
+                        <div class="col-xs-12">
+                            <div class="box">
+                                <div class="box-header">
+                                    <h3 class="box-title">Timer List</h3>
+                                </div><!-- /.box-header -->
+
+                                <div class="box-body">
+                                    <table id="example2" class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>SL No</th>
+                                                <th>Timer Time</th>
+                                                <th>Status</th>
+                                                <th>Modify</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <%
+                                                try {
+                                                    int timer_time = 0;
+                                                    int count = 0;
+                                                    java.sql.Statement st = conn.createStatement();
+                                                    java.sql.ResultSet rs = st.executeQuery("SELECT * FROM loyalty_auto_timer_details WHERE adminid='" + cus_id + "' AND status='active'");
+                                                    while (rs.next()) {
+                                                        count++;
+                                                        timer_time = Integer.parseInt(rs.getString("set_timer"));
+                                                        timer_time = timer_time * 60 * 1000;
+                                            %>
+                                            <tr>
+                                                <td><%=count%></td> 
+                                                <td><%=rs.getString("set_timer")%></td>     
+                                                <td><%=rs.getString("status")%></td>     
+                                                <td>Edit</td>     
+                                            </tr>
+                                            <%
+                                                }
+                                                
+                                            %>
+                                        <script>
+                                            var myVar;
+                                            function myFunction() {
+                                                myVar = setTimeout(alertFunc, <%=timer_time%>);
+                                            }
+                                            function alertFunc() {
+                                                //alert("Hello!");
+                                                myFunction();
+                                                window.location = "auto_checkin_checkout.jsp";
+
+                                            }
+                                        </script>
+                                        <%
+                                            } catch (Exception ex) {
+                                            } finally {
+                                                conn.close();
+                                            }
+                                        %>
+                                        </tbody>
+
+                                    </table>
+                                </div><!-- /.box-body -->
+                            </div><!-- /.box -->
+
+
+                        </div>    
 
                     </div><!-- /.box -->
             </div><!--/.col (left) -->
