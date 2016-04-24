@@ -94,11 +94,21 @@
                                         <tbody>
                                             <%
                                                 try {
+                                                    java.sql.PreparedStatement ps = null;
+                                                    java.sql.ResultSet rst = null;
                                                     int count = 0;
                                                     java.sql.Statement st = conn.createStatement();
                                                     java.sql.ResultSet rs = st.executeQuery("SELECT * FROM sengroup_new_member_reg_details WHERE kiosk_ip='" + Kiosk_ip + "'");
                                                     while (rs.next()) {
                                                         count++;
+                                                        int tempid=0;
+                                                        ps = conn.prepareStatement("SELECT id FROM loyalty_member_login_info_datewise WHERE member_id='"+rs.getString("member_id")+"' AND kiosk_id='" + Kiosk_ip + "' LIMIT 1");
+                                                        rst = ps.executeQuery();
+                                                        if(rst.next()){
+                                                            try{tempid = rst.getInt("id");if(tempid+""==null)tempid=0;}catch(Exception e){e.printStackTrace();}
+                                                        }
+                                                        
+                                                        if(tempid!=0){
                                             %>
                                             <tr>
                                                 <td> <%=count%></td> 
@@ -113,7 +123,8 @@
                                             </tr>
 
 
-                                            <%}%>
+                                            <%}
+                                                    }%>
                                         </tbody>
                                         <%
                                             } catch (Exception e) {

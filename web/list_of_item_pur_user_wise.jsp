@@ -71,51 +71,64 @@
                                 </div><!-- /.box-header -->
 
                                 <div class="box-body">
-                                    <table id="example2" class="table table-bordered table-hover">
+                                    <input type="text" id="search" placeholder="dd/mm/yyyy">
+                                    <input type="text" id="search1" placeholder="Promotion name" >
+                                    <input type="text" id="search2" placeholder="Member name" >
+                                    <table id="table1" class="table table-bordered table-hover">
+
                                         <thead>
-
-
                                             <tr>
                                                 <th>SL No</th>
                                                 <th>Member Id</th>
                                                 <th>Member Name</th>
-                                                <th>Item Name</th>
-                                                <th>Unit Price</th>
-                                                <th>Points</th>
-                                                <th>Total Price</th>
-                                                <th>Quantity</th>
-                                                <th> Date</th>
+                                                <th>Promotion Name</th>
+                                                <th>Offer Name</th>
+                                                <th>Description</th>
+                                                <th>Date</th>
 
                                             </tr>
                                         </thead>
 
                                         <tbody>
-                                            <%                                                try {
+                                            <% try {
                                                     int count = 0;
-
+                                                    DateFormat dft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                                    DateFormat dft1 = new SimpleDateFormat("dd/MM/yyyy");
                                                     java.sql.Statement stk = conn.createStatement();
-                                                    java.sql.ResultSet rtk = stk.executeQuery("SELECT * FROM loyalty_daily_purchase_details where adminid='" + cus_id + "'");
+                                                    java.sql.ResultSet rtk = stk.executeQuery("SELECT * FROM sengroup_new_member_reg_details ");
                                                     while (rtk.next()) {
                                                         count++;
-
+                                                        String promo_id = "";
+                                                        try {
+                                                            promo_id = rtk.getString("promotion_id");
+                                                            if (promo_id == null) {
+                                                                promo_id = "";
+                                                            }
+                                                        } catch (Exception e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                        String dt_modify = dft1.format(dft.parse(rtk.getString("date_modified")));
 
                                             %>
                                             <tr>
                                                 <td> <%=count%> </td>
                                                 <td> <%=rtk.getString("member_id")%></td>
+                                                <td> <%=rtk.getString("fullname")%></td>
                                                 <%
+                                                    String promo_name = "", desc = "", ofrnm = "";
                                                     java.sql.Statement stm = conn.createStatement();
-                                                    java.sql.ResultSet rsm = stm.executeQuery("SELECT * FROM sengroup_new_member_reg_details WHERE member_id='" + rtk.getString("member_id") + "'");
-                                                    while (rsm.next()) {
+                                                    java.sql.ResultSet rsm = stm.executeQuery("SELECT lp.promotionname,lpo.description,lpo.offername FROM loyalty_promotion lp,loyalty_promotionoffer lpo WHERE lp.id=lpo.promotionid AND lp.id='" + promo_id + "'");
+                                                    if (rsm.next()) {
+                                                        promo_name = rsm.getString("promotionname");
+                                                        desc = rsm.getString("description");
+                                                        ofrnm = rsm.getString("offername");
                                                 %>
-                                                <td> <%=rsm.getString("fullname")%></td>
-                                                <%}%>
-                                                <td> <%=rtk.getString("item_name")%></td>
-                                                <td> <%=rtk.getString("unit_price")%></td>
-                                                <td> <%=rtk.getString("points")%></td>
-                                                <td> <%=rtk.getString("total_price")%></td>
-                                                <td> <%=rtk.getString("quantity")%></td>
-                                                <td> <%=rtk.getString("date")%></td>
+
+                                                <%}%> 
+                                                <td> <%=promo_name%></td>
+                                                <td> <%=desc%></td>
+                                                <td> <%=ofrnm%></td>
+                                                <td> <%=dt_modify%></td>
                                             </tr>
 
 
@@ -179,7 +192,33 @@
                 });
             });
         </script>
+        <script type="text/javascript">
+            var $rows = $('#table1 tr');
+            $('#search').keyup(function () {
+                var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
 
+                $rows.show().filter(function () {
+                    var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+                    return !~text.indexOf(val);
+                }).hide();
+            });
+            $('#search1').keyup(function () {
+                var val1 = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+
+                $rows.show().filter(function () {
+                    var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+                    return !~text.indexOf(val1);
+                }).hide();
+            });
+            $('#search2').keyup(function () {
+                var val2 = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+
+                $rows.show().filter(function () {
+                    var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+                    return !~text.indexOf(val2);
+                }).hide();
+            });
+        </script>
     </body>
 </html>
 <%} else {

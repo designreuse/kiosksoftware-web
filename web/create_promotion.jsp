@@ -54,6 +54,34 @@
 
             });
         </script>
+        <script type="text/javascript">
+            function delVal(tabid){
+                var con = confirm('Do you want to delete this record?');
+                if(con){
+                if (typeof XMLHttpRequest != "undefined") {
+                    xmlHttp = new XMLHttpRequest();
+                    }
+                    else if (window.ActiveXObject) {
+                        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+                    if (xmlHttp == null) {
+                        alert("Browser does not support XMLHTTP Request")
+                        return;
+                    }
+                    var url = "delete_promotion_record.jsp";
+                    url += "?tabid=" + tabid;
+                    xmlHttp.onreadystatechange = setValue;
+                    xmlHttp.open("GET", url, true);
+                    xmlHttp.send(null);
+                }
+            }
+            
+            function setValue(){
+                if (xmlHttp.readyState == 4 || xmlHttp.readyState == "complete") {
+                    
+                }
+            }
+        </script>
     </head>
     <body class="skin-blue sidebar-mini">
         <div class="wrapper">
@@ -119,7 +147,7 @@
                                             <input type="text" class="form-control" id="promotion_name" name="promotion_name" placeholder="Enter Promotion Name">
                                         </div>
                                         <div class="form-group">
-                                            <label>Offer From</label>
+                                            <label>Valid From</label>
                                             <input type="text" class="form-control" id="offerfrom" readonly="" name="offerfrom" placeholder="Enter Promotion Start Date">
                                         </div>
                                         <div class="form-group">
@@ -153,7 +181,7 @@
                                             <input type="text" class="form-control" id="desc" name="desc" placeholder="Enter Description">
                                         </div>
                                         <div class="form-group">
-                                            <label>Promotion Valid Upto</label>
+                                            <label>Valid Upto</label>
                                             <input type="text" class="form-control" id="vaidupto" readonly="" name="vaidupto" placeholder="Enter Promotion Last Date">
                                         </div>
 
@@ -172,19 +200,25 @@
                         <div class="col-xs-12">
                             <div class="box">
                                 <div class="box-header">
-                                    <h3 class="box-title">Promotion List</h3>
+                                    <h3 class="box-title">Promotion List</h3><br>
+                                    <br>
+                                    <h5 style="font-size: large;"> Select Promotion Date</h5>
+                                    From : <input type="text" id="search" name="fromdt" placeholder="dd/mm/yyyy">
+                                    To : <input type="text" id="search1" name="enddt" placeholder="dd/mm/yyyy">
                                 </div><!-- /.box-header -->
 
                                 <div class="box-body">
-                                    <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="row"><div class="col-sm-6"></div><div class="col-sm-6"></div></div><div class="row"><div class="col-sm-12"><table id="example2" class="table table-bordered table-hover dataTable no-footer" role="grid" aria-describedby="example2_info">
+                                    <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="row"><div class="col-sm-6"></div><div class="col-sm-6"></div></div><div class="row"><div class="col-sm-12">
+                                                <table id="table1" class="table table-bordered table-hover dataTable no-footer" role="grid" aria-describedby="example2_info">
                                                     <thead>
                                                         <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="SL No: activate to sort column descending">SL No</th>
-                                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Full Name: activate to sort column ascending">Promotion Name</th>
-
-                                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Address: activate to sort column ascending">Desciption</th>
-                                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Member Id: activate to sort column ascending">Created On</th>
-                                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Bonus Point: activate to sort column ascending">Expired on</th>
+                                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Address: activate to sort column ascending">Description</th>
+                                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Full Name: activate to sort column ascending">Promotion Name</th>             
+                                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Member Id: activate to sort column ascending">Valid From</th>
+                                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Bonus Point: activate to sort column ascending">Valid Upto</th>
                                                             <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Mobile No: activate to sort column ascending">Status</th>
+                                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="">Delete</th>
+                                                        </tr>
                                                     </thead>
 
                                                     <tbody>
@@ -196,9 +230,8 @@
                                                         %>
                                                         <tr role="row" class="odd">
                                                             <td class="sorting_1"><%=cc%></td> 
-                                                            <td><%=rsadminstadmincheckpointstadmincheckpointvalue.getString("promotionname")%></td>     
-
                                                             <td><%=rsadminstadmincheckpointstadmincheckpointvalue.getString("description")%></td> 
+                                                            <td><%=rsadminstadmincheckpointstadmincheckpointvalue.getString("promotionname")%></td>           
                                                             <td><%=rsadminstadmincheckpointstadmincheckpointvalue.getString("offerfrom")%></td> 
                                                             <td><%=rsadminstadmincheckpointstadmincheckpointvalue.getString("valid")%></td> 
 
@@ -213,6 +246,9 @@
                                                             <td>Active <a href="permit_promotion.jsp?id=<%= rsadminstadmincheckpointstadmincheckpointvalue.getInt("id")%>&status=deactive">Click here to In-Active</a></td>
 
                                                             <%}%>
+                                                            <td>                                                                
+                                                                <input type="button" name="del" class="btn btn-primary" value="Delete" onclick="delVal('<%= rsadminstadmincheckpointstadmincheckpointvalue.getInt("id")%>')">
+                                                            </td>
                                                         </tr>
                                                         <%}%>
 
@@ -266,6 +302,7 @@
 
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js" type="text/javascript"></script>
+
 <script>
             $(function () {
                 // $("#date").datepicker();
@@ -275,6 +312,38 @@
 
             });
 </script>
+    <script type="text/javascript">
+            $(function () {
+                $("#example1").dataTable();
+                $('#example2').dataTable({
+                    "bPaginate": true,
+                    "bLengthChange": false,
+                    "bFilter": false,
+                    "bSort": true,
+                    "bInfo": true,
+                    "bAutoWidth": false
+                });
+            });
+        </script>
+        <script type="text/javascript">
+            var $rows = $('#table1 tr');
+    $('#search').keyup(function () {
+        var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+
+        $rows.show().filter(function () {
+            var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+            return !~text.indexOf(val);
+        }).hide();
+    });
+     $('#search1').keyup(function () {
+        var val1 = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+
+        $rows.show().filter(function () {
+            var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+            return !~text.indexOf(val1);
+        }).hide();
+    });
+        </script>
 </body>
 </html>
 <%} else {

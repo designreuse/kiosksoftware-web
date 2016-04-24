@@ -41,23 +41,22 @@
         
             <li class="header">Promotions</li>
             <li><a href="create_promotion.jsp?&opt=<%=session.getId()%>"><i class="fa fa-circle-o text-aqua"></i> <span>Manage Promotion</span></a></li>
-            <li><a href="Create_Promotionoffer.jsp?&opt=<%=session.getId()%>"><i class="fa fa-circle-o text-aqua"></i> <span>Manage Promotional Offer</span></a></li>
-            
+            <li><a href="Create_Promotionoffer.jsp?&opt=<%=session.getId()%>"><i class="fa fa-circle-o text-aqua"></i> <span>Send Promotion</span></a></li>
             <li><a href="view_list_of_users.jsp?&opt=<%=session.getId()%>"><i class="fa fa-circle-o text-aqua"></i> <span>User List</span></a></li>
             <li><a href="view_list_of_members.jsp?&opt=<%=session.getId()%>"><i class="fa fa-circle-o text-aqua"></i> <span>Loyality Customer</span></a></li>
             
             <li class="header">Kiosk Control</li>
-            <li><a href="kiosk_management.jsp?&opt=<%=session.getId()%>"><i class="fa fa-circle-o text-aqua"></i> <span>Kiosk Management</span></a></li>
+        <!--    <li><a href="kiosk_management.jsp?&opt=<%=session.getId()%>"><i class="fa fa-circle-o text-aqua"></i> <span>Kiosk Management</span></a></li>  -->
             <li><a href="view_list_of_kiosk.jsp?&opt=<%=session.getId()%>"><i class="fa fa-circle-o text-aqua"></i> <span>KIOSK List</span></a></li>
             <li class="header">Purchase Entry</li>
-            <li><a href="daily_purchase_entry.jsp?&opt=<%=session.getId()%>"><i class="fa fa-circle-o text-aqua"></i> <span>Daily Purchase Entry</span></a></li>
+            <li><a href="daily_purchase_entry.jsp?&opt=<%=session.getId()%>"><i class="fa fa-circle-o text-aqua"></i> <span>Update Promotion Inventory</span></a></li>
             <li class="header">Report</li>
             <!--<li><a href="generate_card.jsp?&opt=<%=session.getId()%>"><i class="fa fa-circle-o text-aqua"></i> <span>Print Card</span></a></li>-->
-            <li><a href="member_details.jsp?&opt=<%=session.getId()%>"><i class="fa fa-circle-o text-aqua"></i> <span>Provide Loyalty Card</span></a></li>
+            <li><a href="member_details.jsp?&opt=<%=session.getId()%>"><i class="fa fa-circle-o text-aqua"></i> <span>Manage Rewards Card</span></a></li>
             
             <!--<li><a href="view_list_of_users_op.jsp?&opt=<%=session.getId()%>"><i class="fa fa-circle-o text-aqua"></i> <span>View User Details</span></a></li>-->
-            <li><a href="view_list_of_members_op.jsp?&opt=<%=session.getId()%>"><i class="fa fa-circle-o text-aqua"></i> <span>View Member Details</span></a></li>
-            <li><a href="list_of_item_pur_user_wise.jsp?&opt=<%=session.getId()%>"><i class="fa fa-circle-o text-aqua"></i> <span>View List of Item</span></a></li>
+            <li><a href="view_list_of_members_op.jsp?&opt=<%=session.getId()%>"><i class="fa fa-circle-o text-aqua"></i> <span>View Customer Details</span></a></li>
+            <li><a href="list_of_item_pur_user_wise.jsp?&opt=<%=session.getId()%>"><i class="fa fa-circle-o text-aqua"></i> <span>Promotion Report</span></a></li>
             <li><a href="List_of_daily_points_gain_form.jsp?&opt=<%=session.getId()%>"><i class="fa fa-circle-o text-aqua"></i> <span>View List daily points gain</span></a></li>
             
         </ul>

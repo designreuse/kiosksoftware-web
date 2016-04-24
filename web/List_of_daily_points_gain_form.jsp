@@ -83,7 +83,7 @@
                             } catch (Exception e) {
                             }%>
                         <form action="list_of_daily_points_gain.jsp" method="post">
-                            <div class="col-md-6">
+                            <div class="col-xs-12">
                                 <!-- general form elements -->
                                 <div class="box box-primary">
 
@@ -91,24 +91,69 @@
 
                                     <div class="box-body">
                                         <div class="form-group">
-                                            <label>Select Member Id</label>
-                                            <select name="member_id" class="form-control" id="member_id">
-                                                <option value="" selected="">---Select Member Id---</option>
-                                                <%
-                                                    java.sql.Statement st = conn.createStatement();
-                                                    java.sql.ResultSet rss = st.executeQuery("SELECT DISTINCT member_id FROM loyalty_daily_purchase_details where adminid='" + cus_id + "'");
-                                                    while (rss.next()) {
-                                                %>
-                                                <option value="<%=rss.getString("member_id")%>"><%=rss.getString("member_id")%> </option>
-                                                <%}%>
-                                            </select>
+                                        
+                                                <table id="table1" class="table table-bordered table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Member Id</th>
+                                                            <th>Name</th>
+                                                            <th>Points</th>
+                                                            <th>Date</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <%
+                                                        java.sql.PreparedStatement ps = null;
+                                                        java.sql.ResultSet rs = null;
+                                                        ArrayList<String>memberList = new ArrayList<String>();
+                                                        try{
+                                                            ps = conn.prepareStatement("SELECT DISTINCT member_id FROM  loyalty_member_login_info_datewise WHERE status = 'Check In' ");
+                                                            rs = ps.executeQuery();
+                                                            while(rs.next()){
+                                                                String memid = "";
+                                                                try{memid = rs.getString("member_id");if(memid==null)memid="";}catch(Exception e){e.printStackTrace();}
+                                                                if(!memid.equals("")){
+                                                                    memberList.add(memid);
+                                                                }
+                                                            }
+                                                            
+                                                            DateFormat dft = new SimpleDateFormat("yyyy-MM-dd");
+                                                            DateFormat new_dft = new SimpleDateFormat("dd/MM/yyyy");
+                                                            java.util.Date dt = new java.util.Date();
+                                                            String curdt = dft.format(dt);
+                                                            String disp_curdt = new_dft.format(dt);
+                                                            for(int j=0;j<memberList.size();j++){System.out.println("SELECT nmrd.member_id,nmrd.fullname,sum(lid.points) FROM loyalty_member_login_info_datewise lid,sengroup_new_member_reg_details nmrd WHERE lid.member_id=nmrd.member_id AND lid.status='Check In' AND lid.member_id='"+memberList.get(j)+"' AND lid.create_date='"+curdt+"'");
+                                                            ps = conn.prepareStatement("SELECT nmrd.fullname,sum(lid.points) FROM loyalty_member_login_info_datewise lid,sengroup_new_member_reg_details nmrd WHERE lid.member_id=nmrd.member_id AND lid.status='Check In' AND lid.member_id='"+memberList.get(j)+"' AND lid.create_date='"+curdt+"'");
+                                                            rs = ps.executeQuery();
+                                                            while(rs.next()){
+                                                                String fname = "";
+                                                                try{fname = rs.getString(1);if(fname==null)fname="";}catch(Exception w){w.printStackTrace();}
+                                                                String pt = "";
+                                                                try{pt = rs.getString(2);if(pt==null)pt="";}catch(Exception e){e.printStackTrace();}
+                                                                
+                                                                if(!fname.equals("") && !pt.equals("")){
+                                                        %>
+                                                        <tr>
+                                                            <td><%=memberList.get(j)%></td>
+                                                            <td><%=rs.getString("fullname")%></td>
+                                                            <td><%=rs.getString(2)%></td>
+                                                            <td><%=disp_curdt%></td>
+                                                        </tr>
+                                                        <%
+                                                                }
+                                                            }
+                                                            }
+                                                        }catch(Exception e){e.printStackTrace();}
+                                                        %>
+                                                    </tbody>
+                                                </table>
                                         </div>
 
 
 
 
 
-                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    <!--    <button type="submit" class="btn btn-primary">Submit</button> -->
                                     </div><!-- /.box-body -->
 
 
@@ -117,25 +162,7 @@
 
 
                             </div>
-                            <div class="col-md-6">
-                                <!-- general form elements disabled -->
-                                <div class="box box-warning">
-
-                                    <div class="box-body">
-
-                                        <!-- text input -->
-
-
-                                        <div class="form-group">
-                                            <label>Date</label>
-                                            <input name="date" class="form-control" id="date" placeholder="date"/>
-                                        </div>
-
-
-
-                                    </div><!-- /.box-body -->
-                                </div><!-- /.box -->
-                            </div><!--/.col (right) -
+                           
                             <!-- /.box-body -->
                         </form>
 

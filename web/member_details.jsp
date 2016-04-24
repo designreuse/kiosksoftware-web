@@ -83,7 +83,8 @@
         </script>
         <script language="javascript" type="text/javascript">
 
-            function showState(str) {
+            function showState(str,n) {//alert(str+"<<<<<>>>>>"+n)
+                var vstr = str+":"+n;
                 if (typeof XMLHttpRequest != "undefined") {
                     xmlHttp = new XMLHttpRequest();
                 }
@@ -95,7 +96,7 @@
                     return;
                 }
                 var url = "information_using_member_id.jsp";
-                url += "?member_id=" + str;
+                url += "?strval=" + vstr;
                 xmlHttp.onreadystatechange = stateChange;
                 xmlHttp.open("GET", url, true);
                 xmlHttp.send(null);
@@ -107,17 +108,52 @@
                     //alert(document.getElementById("results").innerHTML);
                     var result = document.getElementById("results").innerHTML;
                     var obj = JSON.parse(result);
+                    document.getElementById("tabid").value = obj.tab_id;
+                    document.getElementById("member_id").value=obj.memberid;
                     document.getElementById("full_name").value=obj.fullname;
                     document.getElementById("address").value=obj.present_address;
                     document.getElementById("points").value=obj.points;
+                    if(obj.points<200)
+                        document.getElementById("mem_stat").value=100;
+                    else if(obj.points<300)
+                        document.getElementById("mem_stat").value=200;
+                    else if(obj.points<400)
+                        document.getElementById("mem_stat").value=300;
+                    else if(obj.points>=400)
+                        document.getElementById("mem_stat").value=400;
                     document.getElementById("mobile_no").value=obj.phone_no;
                     document.getElementById("email_id").value=obj.email;
-                    document.getElementById("loyalty_no").value=obj.loyalty_card_nos;
+                    if(obj.loyalty_card_nos=="" || obj.loyalty_card_nos==0){
+                        alert("Please provide Loyalty No.!!!");
+                        document.getElementById("loyalty_no").focus();
+                    }
+                    else
+                        document.getElementById("loyalty_no").value=obj.loyalty_card_nos;
+                        
+                    document.getElementById("nm").innerHTML=obj.fullname; 
+                    document.getElementById("ofnm").innerHTML=obj.promoname;
+                    document.getElementById("stdt").innerHTML=obj.startdt;
+                    document.getElementById("nddt").innerHTML=obj.enddt;
+                    
                     //alert(result);
                 }
             }
 
-
+            function setEdit(){
+                document.getElementById("editable").value=1;
+            }
+            
+            function setStatus(){
+                var pt = document.getElementById("points").value;
+                if(pt<200)
+                    document.getElementById("mem_stat").value=100;
+                else if(pt<300)
+                    document.getElementById("mem_stat").value=200;
+                else if(pt<400)
+                    document.getElementById("mem_stat").value=300;
+                else if(pt>=400)
+                    document.getElementById("mem_stat").value=400;
+            }
         </script>
     </head>
     <body class="skin-blue sidebar-mini">
@@ -163,25 +199,46 @@
                                 <!-- general form elements -->
                                 <div class="box box-primary">
                                     <div class="box-body">
+                                        <input type="hidden" id="tabid" name="tabid" value="">
+                                        <input type="hidden" id="editable" name="editable" value="0">
                                         <input type="hidden" name="a_code" id="a_code" value="<%=user_code%>" />
                                         <input type="hidden" name="adminid" id="adminid" value="<%=cus_id%>" />
                                         <input type="hidden" name="u_type" id="u_type" value="<%=user_type%>" />
                                         <div class="form-group">
                                             <label>Member ID</label>
-                                            <input type="text" onchange="showState(this.value);" class="form-control" id="member_id" name="member_id" placeholder="Start Typing Member Id" required="">
+                                            <input type="text" class="form-control" id="member_id" name="member_id" placeholder="Member Id" onclick="setEdit()" required="">
                                         </div>
 
                                         <div class="form-group">
                                             <label>Full Name</label>
-                                            <input type="text" readonly="" class="form-control" id="full_name" name="full_name" placeholder="Full Name" required="">
+                                            <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Full Name" onclick="setEdit()" onblur="showState(this.value,'1')" required="">
                                         </div>
                                         <div class="form-group">
                                             <label>Address</label>
-                                            <input type="text" readonly="" class="form-control" id="address" name="address" placeholder="Address" required="">
-                                        </div>
+                                            <input type="text" class="form-control" id="address" name="address" placeholder="Address" onclick="setEdit()" >
+                                        </div>                                        
                                         <div class="form-group">
                                             <label>Points</label>
-                                            <input type="text" readonly="" class="form-control" id="points" name="points" placeholder="Points" required="">
+                                            <input type="text" class="form-control" id="points" name="points" placeholder="Points" required="" onblur="setStatus()" onclick="setEdit()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Member Status</label>
+                                            <select id="mem_stat" name="mem_stat" class="form-control">
+                                                <option value="0">--select--</option>
+                                                <%
+                                                java.sql.PreparedStatement ps = null;
+                                                java.sql.ResultSet rs = null;
+                                                try{
+                                                    ps = conn.prepareStatement("SELECT * FROM loyalty_membergroup WHERE status='active' ORDER BY membershippoint DESC");
+                                                    rs = ps.executeQuery();
+                                                    while(rs.next()){
+                                                %>
+                                                <option value="<%=rs.getString("membershippoint")%>"><%=rs.getString("description")%></option>
+                                                <%
+                                                    }
+                                                }catch(Exception e){e.printStackTrace();}
+                                                %>
+                                            </select>
                                         </div>
                                     </div>
                                 </div><!-- /.box -->
@@ -194,15 +251,15 @@
                                     <div class="box-body">
                                         <div class="form-group">
                                             <label>Mobile No</label>
-                                            <input type="text" readonly="" class="form-control" id="mobile_no" name="mobile_no" placeholder="Mobile No" required="">
+                                            <input type="text" class="form-control" id="mobile_no" name="mobile_no" placeholder="Mobile No" onblur="showState(this.value,'2')" required="" onclick="setEdit()">
                                         </div>
                                         <div class="form-group">
                                             <label>Email</label>
-                                            <input type="text" readonly="" class="form-control" id="email_id" name="email_id" placeholder="Email Id" required="">
+                                            <input type="text" class="form-control" id="email_id" name="email_id" placeholder="Email Id" onblur="showState(this.value,'3')" required="" onclick="setEdit()">
                                         </div>
                                         <div class="form-group">
                                             <label>Loyalty No</label>
-                                            <input type="text" class="form-control" id="loyalty_no" name="loyalty_no" placeholder="Loyalty No" required="">
+                                            <input type="text" class="form-control" id="loyalty_no" name="loyalty_no" placeholder="Loyalty No" required="" onclick="setEdit()">
                                         </div>
                                         <div id="results" style="display: none;"></div>
                                         <button type="submit" class="btn btn-primary">Submit</button>
@@ -219,6 +276,33 @@
                         </form>
 
                     </div><!-- /.box -->
+                    <div class="col-xs-12">
+                        <div class="box">
+                                <div class="box-header">
+                                    <h3 class="box-title">Received Offer</h3>
+                                </div><!-- /.box-header -->
+                                <div class="box-body">
+                                    <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                        <table id="example2" class="table table-bordered table-hover dataTable no-footer" role="grid" aria-describedby="example2_info">
+                                            <thead>
+                                                <th class="sorting">Name</th>
+                                                <th class="sorting">Offer name</th>
+                                                <th class="sorting">Valid From</th>
+                                                <th class="sorting">Valid To</th>
+                                            </thead>
+                                            <tr>
+                                                <td id="nm"></td>
+                                                <td id="ofnm"></td>
+                                                <td id="stdt"></td>
+                                                <td id="nddt"></td>
+                                            </tr>
+                                        </table>
+                                        
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    
             </div><!--/.col (left) -->
             <!-- right column -->
 

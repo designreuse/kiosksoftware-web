@@ -39,6 +39,11 @@
             <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
             <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+        <script>
+            function onsubmit(){
+                window.location="bluePay.jsp";
+            }
+        </script>
     </head>
     <body class="skin-blue sidebar-mini">
         <div class="wrapper">
@@ -75,7 +80,7 @@
                                     <table id="example2" class="table table-bordered table-hover">
                                         <thead>
                                         <input type="hidden" name="adminid" id="adminid" value="<%=cus_id%>" />
-                                        <input type="button" value="Upgrade"/>
+                                        <a href="subscription_plans.jsp"><input type="button" class="btn btn-primary" value="New Subscription"/></a>
                                         <tr>
                                             <th>SL No</th>
                                             <th>License No</th>

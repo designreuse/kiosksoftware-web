@@ -31,8 +31,19 @@
             <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
             <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
-        <script>
-
+        <script type="text/javascript">
+            function subVal(){
+                var fl=0;
+                var sttime = document.getElementById("settimer").value;
+                var stat = document.getElementById("status").value;
+                if(sttime==""){
+                    alert('Please provide Timer Time !!!');
+                    fl=1;
+                }
+                
+                if(fl==0)
+                    document.getElementById("editForm").submit();
+            }
 
         </script>
 
@@ -78,8 +89,8 @@
                         <%}
                             } catch (Exception e) {
                             }%>
-                        <form role="form" action="create_auto_timer_action.jsp" method="POST" >
-                            <input type="hidden" name="adminid" value="<%=cus_id%>"/>
+                        <form role="form" action="create_auto_timer_action.jsp?edit=0" method="POST" >
+                            <input type="hidden" name="adminid" id="adminid" value="<%=cus_id%>"/>
                             <div class="col-md-6">
                                 <!-- general form elements -->
                                 <div class="box box-primary">
@@ -138,10 +149,11 @@
                                 </div><!-- /.box-header -->
 
                                 <div class="box-body">
+                                    <form id="editForm" action="create_auto_timer_action.jsp?edit=1" method="post">
+                                        <input type="hidden" name="adminid1" id="adminid1" value="<%=cus_id%>"/>
                                     <table id="example2" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <th>SL No</th>
                                                 <th>Timer Time</th>
                                                 <th>Status</th>
                                                 <th>Modify</th>
@@ -155,15 +167,35 @@
                                                     java.sql.Statement st = conn.createStatement();
                                                     java.sql.ResultSet rs = st.executeQuery("SELECT * FROM loyalty_auto_timer_details WHERE adminid='" + cus_id + "' AND status='active'");
                                                     while (rs.next()) {
-                                                        count++;
+                                                        count=rs.getInt("id");
                                                         timer_time = Integer.parseInt(rs.getString("set_timer"));
                                                         timer_time = timer_time * 60 * 1000;
                                             %>
                                             <tr>
-                                                <td><%=count%></td> 
-                                                <td><%=rs.getString("set_timer")%></td>     
-                                                <td><%=rs.getString("status")%></td>     
-                                                <td>Edit</td>     
+                                            
+                                                <td>
+                                                    <input type="text" id="settimer" name="settimer" value="<%=rs.getString("set_timer")%>" class="form-control">
+                                                </td>     
+                                            
+                                                <td>
+                                                    <select id="status" name="status" class="form-control">
+                                                        <%
+                                                        if(rs.getString("status").equals("active")){
+                                                        %>
+                                                        <option value="active" selected=""> Active</option>
+                                                        <option value="De_active"> De Active </option>
+                                                        <%
+                                                        }else{
+                                                        %>
+                                                        <option value="active"> Active</option>
+                                                        <option value="De_active" selected> De Active </option>
+                                                        <%
+                                                        }
+                                                        %>
+                                                    </select>
+                                                </td>     
+                                            
+                                                <td><input type="button" name="sub" value="Update" class="btn btn-primary" onclick="subVal()"></td>
                                             </tr>
                                             <%
                                                 }
@@ -190,6 +222,7 @@
                                         </tbody>
 
                                     </table>
+                                        </form>
                                 </div><!-- /.box-body -->
                             </div><!-- /.box -->
 

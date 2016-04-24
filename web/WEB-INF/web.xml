@@ -52,6 +52,20 @@
         <servlet-name>allocate_subscription_plan</servlet-name>
         <servlet-class>com.loyalty.card.superadmin.master.allocate_subscription_plan</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PaymentAction</servlet-name>
+        <servlet-class>com.loyalty.card.admin.api.PaymentAction</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>createItem</servlet-name>
+        <servlet-class>com.loyalty.card.admin.masters.createItem</servlet-class>
+    </servlet>
+    
+    <listener>
+        <listener-class>com.loyalty.schedule.ScheduleListener</listener-class>
+    </listener>
+    
+    
     <servlet-mapping>
         <servlet-name>log_in</servlet-name>
         <url-pattern>/log_in</url-pattern>
@@ -100,6 +114,15 @@
         <servlet-name>allocate_subscription_plan</servlet-name>
         <url-pattern>/allocate_subscription_plan</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PaymentAction</servlet-name>
+        <url-pattern>/PaymentAction</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>createItem</servlet-name>
+        <url-pattern>/createItem</url-pattern>
+    </servlet-mapping>
+    
     <session-config>
         <session-timeout>
             30

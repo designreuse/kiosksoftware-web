@@ -13,6 +13,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -42,7 +45,7 @@ public class Daily_Purchase_Entry extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
-        String member_id = request.getParameter("member_id");
+     /*   String member_id = request.getParameter("member_id");
         String item_name = request.getParameter("item_name");
         String unit_price = request.getParameter("unit_price");
         String points = request.getParameter("points");
@@ -74,7 +77,7 @@ public class Daily_Purchase_Entry extends HttpServlet {
             /*
             TODO output your page here. You may use following sample code.
             */
-            connnsearkioskmain=DBConnect.getConnect();
+        /*    connnsearkioskmain=DBConnect.getConnect();
             stsearchkioskmain=connnsearkioskmain.createStatement();
             rssearchkioskmain=stsearchkioskmain.executeQuery("SELECT * FROM loyalty_allocate_subscription_plan WHERE admin_id='" + adminid + "' && status='active'");
             while (rssearchkioskmain.next()) 
@@ -135,7 +138,33 @@ public class Daily_Purchase_Entry extends HttpServlet {
             Logger.getLogger(Daily_Purchase_Entry.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             out.close();
-        }
+        }*/
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection con = null;
+        try{
+            String memId = request.getParameter("memId");
+            String item_id = request.getParameter("item_name");
+            String p_offer_id = request.getParameter("promo_offer");
+            DateFormat dft = new SimpleDateFormat("yyyy-MM-dd");
+            Date dt = new Date();
+            String curdt = dft.format(dt);
+            con = DBConnect.getConnect();
+            String item_name="";
+            ps = con.prepareStatement("SELECT item_name FROM loyalty_item_details WHERE id='"+item_id+"'");
+            rs = ps.executeQuery();
+            if(rs.next()){
+                item_name = rs.getString("item_name");
+            }
+            
+            ps = con.prepareStatement("INSERT INTO member_item_promotionoffer (member_id,item_id,item_name,promotion_offer_id,create_date) VALUES ('"+memId+"','"+item_id+"','"+item_name+"','"+p_offer_id+"','"+curdt+"')");
+            int updt = ps.executeUpdate();
+            if(updt!=0)
+                response.sendRedirect("daily_purchase_entry.jsp?status=1&opt=" + session.getId());
+            else
+                response.sendRedirect("daily_purchase_entry.jsp?status=2&opt=" + session.getId());
+            
+        }catch(Exception e){e.printStackTrace();}
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

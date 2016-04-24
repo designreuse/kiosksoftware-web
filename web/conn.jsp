@@ -12,7 +12,7 @@
 <%
 
 //try{
-    String connectionURL = "jdbc:mysql://localhost:3306/loyalty_card_db";
+    String connectionURL = "jdbc:mysql://localhost:3306/kiosk_db";
     Connection conn = null;
     Class.forName("com.mysql.jdbc.Driver").newInstance();
     conn = DriverManager.getConnection(connectionURL, "root", "root");

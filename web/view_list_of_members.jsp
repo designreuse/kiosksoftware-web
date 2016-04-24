@@ -128,7 +128,7 @@
                                                 int count = 0;
                                                 String poin = "";
                                                 java.sql.Statement st = conn.createStatement();
-                                                java.sql.ResultSet rs = st.executeQuery("SELECT * FROM sengroup_new_member_reg_details where adminid='" + cus_id + "'");
+                                                java.sql.ResultSet rs = st.executeQuery("SELECT * FROM sengroup_new_member_reg_details where admin_id='" + cus_id + "'");
                                                 while (rs.next()) {
                                                     count++;
                                                     java.sql.Statement stfromallo = conn.createStatement();

@@ -1,7 +1,7 @@
 <%-- 
-    Document   : daily_purchase_entry
-    Created on : 23 Jul, 2015, 1:37:16 PM
-    Author     : surajit
+    Document   : create_item
+    Created on : 19 Feb, 2016, 12:46:48 PM
+    Author     : xent30
 --%>
 
 
@@ -43,26 +43,6 @@
             <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
             <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
-        <script type="text/javascript">
-            function chkVal(){
-                var fl=0;
-                var mem_id = document.getElementById("memId").value;
-                var item = document.getElementById("item_name").value;
-                var p_offer = document.getElementById("promo_offer").value;
-                if(mem_id==""){
-                    alert('Please select Member Id!!!');
-                    fl=1;
-                }else if(item==""){
-                    alert('Please select Item Name!!!');
-                    fl=1;
-                }else if(p_offer==""){
-                    alert('Please select Promotion Offer!!!');
-                }
-                
-                if(fl==0)
-                    document.getElementById("myform").submit();
-            }
-        </script>
     </head>
     <body class="skin-blue sidebar-mini">
         <div class="wrapper">
@@ -76,7 +56,7 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Promotion Inventory
+                        Daily Purchase Entry
 
                     </h1>
                     <ol class="breadcrumb">
@@ -94,79 +74,85 @@
                                 if (request.getParameter("status").equals("1")) {
                         %>
                         <div style=" background: green; padding: 3px 3px 3px 3px; width: 97% ; margin-left: 15px; margin-bottom: 5px;color: #ffffff; ">
-                            Daily Purchase Entry Created
+                            Item Entry Created Successfully
                         </div>
                         <%} else {%>
                         <div style=" background: red; padding: 3px 3px 3px 3px; width: 97% ;margin-left: 5px;margin-bottom: 5px;color: #ffffff; ">
-                            There Goes Something Wrong or Member Id doesn't Exist
+                            There Goes Something Wrong 
                         </div>
                         <%}
                 } catch (Exception e) {
                 }%>
-                        <form id="myform" role="form" action="<%=request.getContextPath()%>/Daily_Purchase_Entry" method="POST" >
+                        <form role="form" action="<%=request.getContextPath()%>/createItem" method="POST" >
+                            <input type="hidden" name="adminid" value="<%=cus_id%>"/>
                             <div class="col-md-6">
+                                <!-- general form elements -->
                                 <div class="box box-primary">
+                                    <!-- form start -->
+
                                     <div class="box-body">
-                                        <div class="form-group">
-                                            <label>Member Id</label>
-                                            <select id="memId" name="memId" class="form-control">
-                                                <option value="0">--select--</option>
-                                            <%
-                                                java.sql.PreparedStatement ps = null;
-                                                java.sql.ResultSet rs = null;
-                                            try{
-                                                ps = conn.prepareStatement("SELECT DISTINCT member_id,id FROM sengroup_new_member_reg_details");
-                                                rs = ps.executeQuery();
-                                                while(rs.next()){
-                                            %>
-                                            <option value="<%=rs.getInt("id")%>"><%=rs.getString("member_id")%></option>
-                                            <%
-                                                }
-                                            }catch(Exception e){e.printStackTrace();}
-                                            %>
-                                            </select>
-                                        </div>
-                                            
+                                        <input type="hidden" name="a_code" id="a_code" value="<%=user_code%>" />
+                                        <input type="hidden" name="u_type" id="u_type" value="<%=user_type%>" />
+
+                                    <!--    <div class="form-group">
+                                            <label>Member ID</label>
+                                            <input type="text" class="form-control" id="member_id" name="member_id" placeholder="Member ID" required="">
+                                        </div> -->
                                         <div class="form-group">
                                             <label>Item Name</label>
-                                            <select id="item_name" name="item_name" class="form-control">
-                                                <option value="0">--select--</option>
-                                                <%
-                                                try{
-                                                    ps = conn.prepareStatement("SELECT id,item_name FROM loyalty_item_details");
-                                                    rs = ps.executeQuery();
-                                                    while(rs.next()){
-                                                %>
-                                                <option value="<%=rs.getInt("id")%>"><%=rs.getString("item_name")%></option>
-                                                <%
-                                                    }
-                                                }catch(Exception e){e.printStackTrace();}
-                                                %>
-                                            </select>
+                                            <input type="text" class="form-control" name="item_name" id="item_name" placeholder="Item Name" required="">
                                         </div>
-                                            
                                         <div class="form-group">
-                                            <label>Promotion Offer</label>
-                                            <select id="promo_offer" name="promo_offer" class="form-control">
-                                                <option value="0">--select--</option>
-                                                <%
-                                                try{
-                                                    ps = conn.prepareStatement("SELECT id,description FROM loyalty_promotionoffer WHERE adminid='"+cus_id+"'");
-                                                    rs = ps.executeQuery();
-                                                    while(rs.next()){
-                                                %>
-                                                <option value="<%=rs.getInt("id")%>"><%=rs.getString("description")%></option>
-                                                <%
-                                                    }
-                                                }catch(Exception e){e.printStackTrace();}
-                                                %>
-                                            </select>
+                                            <label>Unit Price</label>
+                                            <input type="number" class="form-control" name="unit_price" id="unit_price" placeholder="Unit Price" required="">
                                         </div>
-                                            
-                                            <input type="button" name="sub" value="Submit" class="btn btn-primary" onclick="chkVal()">
-                                    </div>
-                                </div>
+                                        <div>
+                                            <label>Total Price</label>
+                                            <input type="number" class="form-control" name="total_price" id="total_price" placeholder="Total Price" required="">
+                                       </div>
+                                        <div class="form-group">
+                                            <label> Date</label>
+                                            <input type="text" class="form-control" name="date" id="date" placeholder="Date" required="">
+
+                                        </div>
+
+
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div><!-- /.box-body -->
+
+
+
+                                </div><!-- /.box -->
+
+
                             </div>
+                            <div class="col-md-6">
+                                <!-- general form elements disabled -->
+                                <div class="box box-warning">
+                                    <div class="box-body">
+
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label>Item Description</label>
+                                            <input type="text" class="form-control" name="item_desc" id="item_desc" placeholder="Item Description" required="">
+                                         </div>
+
+                                        <div class="form-group">
+                                            <label> Points </label>
+                                            <input type="number" class="form-control" name="points" id="points" placeholder="Points" required="">
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Quantity</label>
+                                            <input type="number" id="quantity" name="quantity" placeholder="Quantity" class="form-control" required="">
+                                        </div>
+
+                                        
+
+                                    </div><!-- /.box-body -->
+                                </div><!-- /.box -->
+                            </div><!--/.col (right) -
+                            <!-- /.box-body -->
                         </form>
 
                     </div><!-- /.box -->
@@ -220,4 +206,5 @@
 <%} else {
         response.sendRedirect("super_admin_login.jsp");
     }%>
+
 
