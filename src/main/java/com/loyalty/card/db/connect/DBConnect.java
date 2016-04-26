@@ -33,7 +33,7 @@ public class DBConnect {
 		{
 
 			Properties prop=new Properties();
-                        InputStream in=DBConnect.class.getResourceAsStream("/com/loyalty/card/db/properties/MySqlDatabase.properties");
+                        InputStream in=DBConnect.class.getResourceAsStream("/MySqlDatabase.properties");
                         prop.load(in);
                         final String driver=prop.getProperty("MYSQL.DRIVER");
                         final String dburl = prop.getProperty("MYSQL.DBURL");
